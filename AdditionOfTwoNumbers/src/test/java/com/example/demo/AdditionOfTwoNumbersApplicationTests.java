@@ -24,4 +24,18 @@ public class AdditionOfTwoNumbersApplicationTests {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("15"));
     }
+    @Test
+    public void testAddNumbers_InvalidRequestBody() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"number1\": \"abc\", \"number2\": 3}")) // Invalid request body with a non-numeric value
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+    
+    @Test
+    public void testAddNumbers_MissingRequestBody() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/add")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
 }
